@@ -3,12 +3,17 @@ import './style.scss';
 function createTask(taskDescription) {
     let button = document.createElement('button');
     button.classList.add('btn-task');
+    button.style.display = "flex";
+    button.style.alignItems = "center";
+    button.style.justifyContent = "space-between";
 
     let leftContainer = document.createElement("div");
     leftContainer.style.display = "flex";
     leftContainer.style.alignItems = "center";
     leftContainer.style.justifyContent = "left";
     leftContainer.style.width = "50%";
+    leftContainer.style.height = "100%";
+    // leftContainer.style.backgroundColor = "red";
 
     let icon = document.createElement("i");
     icon.classList.add('fa-xl', 'fa-circle', 'fa-regular');
@@ -44,7 +49,36 @@ function createTask(taskDescription) {
         }
     });
 
+    let rightContainer = document.createElement('div');
+    rightContainer.style.display = "none";
+    rightContainer.style.alignItems = "center";
+    rightContainer.style.justifyContent = "right";
+    rightContainer.style.width = "10%";
+    rightContainer.style.height = "100%";
+    // rightContainer.style.display = "none";
+    // rightContainer.style.backgroundColor = "red";
+
+    let deleteIcon = document.createElement("i");
+    deleteIcon.classList.add('fa-xl', 'fa-trash-can', 'fa-solid');
+    deleteIcon.style.cursor = "pointer";
+    deleteIcon.style.marginRight = "10px";
+    rightContainer.appendChild(deleteIcon);
+
+    deleteIcon.addEventListener('click', () => {
+        button.remove();
+    });
+
+    button.appendChild(rightContainer);
+
     //<i class="far fa-circle-check fa-xl" style="margin-left: 10px; cursor: pointer;"></i>
+
+    button.addEventListener('mouseenter', () => {
+        rightContainer.style.display = "flex";
+    });
+
+    button.addEventListener('mouseleave', () => {
+        rightContainer.style.display = "none";  
+    });
 
     return button;
 }
