@@ -3,6 +3,17 @@ import './task.js';
 import './storage.js';
 
 function createTask(taskDescription) {
+    
+    function createTaskButton(iconName, isSolid, marginDirection, marginLength) {
+        let iconType = isSolid ? 'fa-solid' : 'fa-regular'
+        let icon = document.createElement("i");
+        icon.classList.add('fa-xl', iconType, iconName);
+        icon.style.cursor = "pointer";
+        if (marginDirection == "left") icon.style.marginLeft = marginLength;
+        if (marginDirection == "right") icon.style.marginRight = marginLength;
+        return icon;
+    }
+
     let button = document.createElement('button');
     button.classList.add('btn-task');
     button.style.display = "flex";
@@ -17,11 +28,8 @@ function createTask(taskDescription) {
     leftContainer.style.height = "100%";
     // leftContainer.style.backgroundColor = "red";
 
-    let icon = document.createElement("i");
-    icon.classList.add('fa-xl', 'fa-circle', 'fa-regular');
-    icon.style.cursor = "pointer";
-    icon.style.marginLeft = "10px";
-    leftContainer.appendChild(icon);
+    let completedIcon = createTaskButton('fa-circle', false, "left", "10px");
+    leftContainer.appendChild(completedIcon);
 
     let span = document.createElement("span");
     span.textContent = taskDescription;
@@ -35,18 +43,18 @@ function createTask(taskDescription) {
 
     let checked = false;
 
-    icon.addEventListener('click', () => {
+    completedIcon.addEventListener('click', () => {
         if (!checked) {
-            icon.classList.add('fa-circle-check', 'fa-solid');
-            icon.classList.remove('fa-circle', 'fa-regular');
-            icon.style.color = "#72abda";
+            completedIcon.classList.add('fa-circle-check', 'fa-solid');
+            completedIcon.classList.remove('fa-circle', 'fa-regular');
+            completedIcon.style.color = "#72abda";
             checked = true;
             button.style.opacity = "50%";
             span.style.textDecoration = "line-through";
         } else {
-            icon.classList.add('fa-circle', 'fa-regular');
-            icon.classList.remove('fa-circle-check', 'fa-solid');
-            icon.style.color = "";
+            completedIcon.classList.add('fa-circle', 'fa-regular');
+            completedIcon.classList.remove('fa-circle-check', 'fa-solid');
+            completedIcon.style.color = "";
             checked = false;
             button.style.opacity = "";
             span.style.textDecoration = "";
@@ -62,17 +70,10 @@ function createTask(taskDescription) {
     // rightContainer.style.display = "none";
     // rightContainer.style.backgroundColor = "red";
 
-    let editIcon = document.createElement("i");
-    editIcon.classList.add('fa-xl', 'fa-pen-to-square', 'fa-solid');
-    editIcon.style.cursor = "pointer";
-    editIcon.style.marginRight = "13px";
-    rightContainer.appendChild(editIcon)
-    //<i class="fa-solid fa-pen-to-square"></i>
+    let editIcon = createTaskButton('fa-pen-to-square', true, "right", "13px");
+    rightContainer.appendChild(editIcon);
 
-    let deleteIcon = document.createElement("i");
-    deleteIcon.classList.add('fa-xl', 'fa-trash-can', 'fa-solid');
-    deleteIcon.style.cursor = "pointer";
-    deleteIcon.style.marginRight = "10px";
+    let deleteIcon = createTaskButton('fa-trash-can', true, "right", "10px");
     rightContainer.appendChild(deleteIcon);
 
     deleteIcon.addEventListener('click', () => {
