@@ -1,4 +1,6 @@
 import './style.scss';
+import './task.js';
+import './storage.js';
 
 function createTask(taskDescription) {
     let button = document.createElement('button');
@@ -20,7 +22,7 @@ function createTask(taskDescription) {
     icon.style.cursor = "pointer";
     icon.style.marginLeft = "10px";
     leftContainer.appendChild(icon);
-    
+
     let span = document.createElement("span");
     span.textContent = taskDescription;
     span.style.padding = "10px";
@@ -40,12 +42,14 @@ function createTask(taskDescription) {
             icon.style.color = "#72abda";
             checked = true;
             button.style.opacity = "50%";
+            span.style.textDecoration = "line-through";
         } else {
             icon.classList.add('fa-circle', 'fa-regular');
             icon.classList.remove('fa-circle-check', 'fa-solid');
             icon.style.color = "";
             checked = false;
             button.style.opacity = "";
+            span.style.textDecoration = "";
         }
     });
 
@@ -57,6 +61,13 @@ function createTask(taskDescription) {
     rightContainer.style.height = "100%";
     // rightContainer.style.display = "none";
     // rightContainer.style.backgroundColor = "red";
+
+    let editIcon = document.createElement("i");
+    editIcon.classList.add('fa-xl', 'fa-pen-to-square', 'fa-solid');
+    editIcon.style.cursor = "pointer";
+    editIcon.style.marginRight = "13px";
+    rightContainer.appendChild(editIcon)
+    //<i class="fa-solid fa-pen-to-square"></i>
 
     let deleteIcon = document.createElement("i");
     deleteIcon.classList.add('fa-xl', 'fa-trash-can', 'fa-solid');

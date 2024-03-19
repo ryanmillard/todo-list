@@ -37,9 +37,11 @@ main {
     border-radius: 15px 0 0 0;
 }
 
-.category-title {
+.main-container {
     padding: 40px;
-    padding-bottom: 15px;
+}
+
+.category-title {
     color: white;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 2rem;
@@ -50,9 +52,38 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 40px;
+    margin-top: 30px;
     gap: 10px;
     flex-direction: column;
+}
+
+#btn-add-task {
+    background: $dark-2;
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    margin-top: 20px;
+
+    &:hover {
+        background-color: lighten($dark-2, 5%);
+        cursor: pointer;
+    }
+}
+
+#btn-add-task:hover i {
+    color: $green;
+}
+
+.btn-task .fa-trash-can:hover {
+    transition-duration: 0.2s;
+    color: $red;
+}
+
+.btn-task .fa-pen-to-square:hover {
+    transition-duration: 0.2s;
+    color: $blue;
 }
 
 .btn-task {
@@ -84,7 +115,6 @@ main {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 10px;
     padding: 20px;
 }
 
@@ -93,16 +123,27 @@ main {
     height: 40px;
     border-radius: 5px;
     border: none;
-    font-weight: bold;
     color: white;
-    background-color: $dark-2;
+    background-color: $dark-3;
     font-size: 1rem;
     cursor: pointer;
-    text-align: center;
+    text-align: left;
 
     &:hover {
-        background-color: lighten($dark-2, 5%)
+        background-color: lighten($dark-3, 5%)
     }
+}
+
+.btn-side-selected {
+    background-color: $dark-2;
+    font-weight: bold;
+    &:hover {
+        background-color: lighten($dark-2, 5%);
+    }
+}
+
+.btn-side-icon {
+    margin: 10px 12px 10px 15px;
 }
 
 footer {
