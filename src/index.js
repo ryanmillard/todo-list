@@ -1,6 +1,8 @@
 import './style.scss';
 import './task.js';
 import './storage.js';
+import { storeTask } from './storage.js';
+import { Task } from './task.js';
 
 function createTask(taskDescription) {
     
@@ -67,8 +69,6 @@ function createTask(taskDescription) {
     rightContainer.style.justifyContent = "right";
     rightContainer.style.width = "10%";
     rightContainer.style.height = "100%";
-    // rightContainer.style.display = "none";
-    // rightContainer.style.backgroundColor = "red";
 
     let editIcon = createTaskButton('fa-pen-to-square', true, "right", "13px");
     rightContainer.appendChild(editIcon);
@@ -82,8 +82,6 @@ function createTask(taskDescription) {
 
     button.appendChild(rightContainer);
 
-    //<i class="far fa-circle-check fa-xl" style="margin-left: 10px; cursor: pointer;"></i>
-
     button.addEventListener('mouseenter', () => {
         rightContainer.style.display = "flex";
     });
@@ -91,6 +89,8 @@ function createTask(taskDescription) {
     button.addEventListener('mouseleave', () => {
         rightContainer.style.display = "none";  
     });
+
+    storeTask(new Task(taskDescription));
 
     return button;
 }
