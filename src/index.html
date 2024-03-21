@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>MyTasksToday</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+        <link rel="icon" type="image/x-icon" href="./favicon.ico"/>
     </head>
     <body>
-        <header><i class="fa-lg fa-solid fa-list-check" style="margin-right: 8px;"></i>MyTasksToday</header>
+        <header><i class="fa-lg fa-solid fa-list-check" style="margin: 0px 8px 0px 10px;"></i>MyTasksToday</header>
         <main>
             <div id="sidebar">
                 <nav>
                     <div class="side-category">
                         <span class="side-header">My Tasks</span>
-                        <button class="btn-side btn-side-selected"><i class="fa-lg fa-solid fa-inbox btn-side-icon"></i>Inbox</button>
-                        <button class="btn-side"><i class="fa-lg fa-solid fa-calendar-day btn-side-icon"></i>Today</button>
-                        <button class="btn-side"><i class="fa-lg fa-solid fa-calendar-week btn-side-icon"></i>This Week</button>
-                        <button class="btn-side"><i class="fa-lg fa-solid fa-calendar-days btn-side-icon"></i>This Month</button>
-                        <button class="btn-side"><i class="fa-lg fa-solid fa-calendar-check btn-side-icon"></i>Completed</button>
-                        <button class="btn-side"><i class="fa-lg fa-solid fa-calendar-xmark btn-side-icon"></i>Past Due</button>
+                        <button id="inbox-btn" class="btn-side btn-side-selected"><i class="fa-lg fa-solid fa-inbox btn-side-icon"></i>Inbox</button>
+                        <button id="today-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-day btn-side-icon"></i>Today</button>
+                        <button id="week-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-week btn-side-icon"></i>This Week</button>
+                        <button id="month-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-days btn-side-icon"></i>This Month</button>
+                        <button id="completed-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-check btn-side-icon"></i>Completed</button>
+                        <button id="past-due-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-xmark btn-side-icon"></i>Past Due</button>
+                        <button id="trash-btn" class="btn-side"><i class="fa-lg fa-solid fa-trash-can btn-side-icon"></i>Trash</button>
                     </div>
                 </nav>
             </div>
             <div id="main-content">
                 <div class="main-container">
-                    <div class="category-title">Inbox</div>
-                    <div class="category-list">
+                    <div id="category-title">Inbox</div>
+                    <div id="category-message">No tasks</div>
+                    <div id="category-list">
                         <!-- <button class="btn-task">
                             <i class="far fa-circle-check fa-xl" style="margin-left: 10px; cursor: pointer;"></i>
                         </button> -->

@@ -1,6 +1,6 @@
-let tasks = [];
+let tasks = {};
 
-localStorage.setItem("tasks", "[]");
+localStorage.setItem("tasks", "{}");
 
 // Check if tasks exists in local storage
 if (localStorage.getItem("tasks") === null) {
@@ -13,30 +13,42 @@ console.log(localStorage.getItem('tasks') === null);
 console.log(localStorage);
 
 function updateStorage() {
-    let tasksCopy = tasks.map((e) => e);
+    // {...tasks} and Object.assign({}, tasks) kept copying
+    // by reference, so I had to use this instead.
+    let tasksCopy = JSON.parse(JSON.stringify(tasks));
 
-    for (let i = 0; i < tasksCopy.length; i++) {
-        Object.keys(tasksCopy[i]).forEach(key => {
-            let value = tasksCopy[i][key];
+    Object.keys(tasksCopy).forEach(taskID => {
+        Object.keys(tasksCopy[taskID]).forEach(key => {
+            let value = tasksCopy[taskID][key];
             if (value === null
                 || value === undefined
-                || key === 'length')
+                || key === 'length'
+                || key === 'ID')
             {
-                delete tasksCopy[i][key];
+                delete tasksCopy[taskID][key];
             }
         });
-    }
+    });
 
     localStorage.setItem("tasks", JSON.stringify(tasksCopy));
-    console.log(JSON.stringify(tasksCopy));
+    console.log("localStorage:", JSON.stringify(tasksCopy));
 }
 
-function storeTask(task) {
-    console.log(tasks);
-    tasks.push(task);
+export function storeNewTask(task) {
+    tasks[task.ID] = task;
+    console.log("Storing task", tasks[task.ID]);
     updateStorage();
 }
 
-module.exports = {
-    storeTask
+export function deleteTask(taskID) {
+    delete tasks[taskID];
+    updateStorage();
+}
+
+export function getTaskByID(taskID) {
+    return tasks[taskID];
+}
+
+export function getAllTasks() {
+    return tasks;
 }

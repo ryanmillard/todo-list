@@ -9,6 +9,10 @@ $blue: #72abda;
 $header-height: 50px;
 $footer-height: 50px;
 
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 body {
     margin: 0;
     background-color: $dark-3;
@@ -19,7 +23,7 @@ header {
     background-color: $dark-4;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 
     color: white;
     font-size: 1.4rem;
@@ -41,25 +45,36 @@ main {
     background-color: $dark-2;
     overflow: scroll;
     border-radius: 15px 0 0 0;
+
+    display: flex;
+    justify-content: center;
 }
 
 .main-container {
     padding: 40px;
+    width: 100%;
+    max-width: 700px;
 }
 
-.category-title {
+#category-title {
     color: white;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 2rem;
     font-weight: bold;
 }
 
-.category-list {
+#category-message {
+    margin-top: 20px;
+    margin-bottom: -30px;
+    color: white;
+}
+
+#category-list {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 30px;
-    gap: 10px;
+    // gap: 10px;
     flex-direction: column;
 }
 
@@ -93,12 +108,14 @@ main {
 }
 
 .btn-task {
-    background-color: $dark-1;
+    // background-color: $dark-1;
+    background: none;
     color: white;
     border: none;
     border-radius: 5px;
     width: 100%;
-    height: 50px;
+    // height: 50px;
+    height: 40px;
 
     display: flex;
     align-items: center;
