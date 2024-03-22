@@ -120,7 +120,7 @@ function createTaskUI(task) {
         if (!checked) {
             completedIcon.classList.add('fa-circle-check', 'fa-solid');
             completedIcon.classList.remove('fa-circle', 'fa-regular');
-            completedIcon.style.color = "#72abda";
+            completedIcon.style.color = "#fff";
             checked = true;
             button.style.opacity = "50%";
             span.style.textDecoration = "line-through";
@@ -166,9 +166,6 @@ function createTaskUI(task) {
         rightContainer.style.display = "none";  
     });
 
-    let categoryMessage = document.getElementById('category-message');
-    categoryMessage.style.display = "none";
-
     let list = document.getElementById('category-list');
     list.appendChild(button);
 }
@@ -181,9 +178,8 @@ export function changeCategory(categoryName) {
     currentCategory = categoryName;
 }
 
-function changeCategoryTitle(categoryName) {
-    let categoryTitle = document.getElementById('category-title');
-    let titles = {
+function getCategoryDisplayName(categoryName) {
+    let displayNames = {
         "inbox": "Inbox",
         "today": "Today",
         "week": "This Week",
@@ -192,7 +188,12 @@ function changeCategoryTitle(categoryName) {
         "pastDue": "Past Due",
         "trash": "Trash"
     }
-    categoryTitle.textContent = titles[categoryName];
+    return displayNames[categoryName];
+}
+
+function changeCategoryTitle(categoryName) {
+    let categoryTitle = document.getElementById('category-title');
+    categoryTitle.textContent = getCategoryDisplayName(categoryName);
 }
 export function createTask(task) {
     sortTaskIntoCategories(task.ID);
@@ -203,9 +204,22 @@ function renderCategory(categoryName) {
     let categoryList = document.getElementById('category-list');
     categoryList.textContent = '';
 
+    let categoryMessage = document.getElementById('category-message');
+
+    if (categories[categoryName].length === 0) {
+        categoryMessage.textContent = `No tasks to display for ${getCategoryDisplayName(categoryName).toLowerCase()}.`;
+        categoryMessage.style.display = '';
+    } else {
+        categoryMessage.style.display = "none";
+    }
+
     categories[categoryName].forEach(taskID => {
         createTaskUI(storage.getTaskByID(taskID));
     });
 }
 
 console.log("Categories:", categories);
+
+export function getCurrentCategoryName() {
+    return currentCategory;
+}
