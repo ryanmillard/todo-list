@@ -6,19 +6,23 @@
         <link rel="icon" type="image/x-icon" href="./favicon.ico"/>
     </head>
     <body>
-        <header><i class="fa-lg fa-solid fa-list-check" style="margin: 0px 8px 0px 10px;"></i>MyTasksToday</header>
+        <header>
+            <div class="header-logo">
+                <i class="fa-lg fa-solid fa-list-check" style="margin-right: 10px;"></i>MyTasksToday
+            </div>
+        </header>
         <main>
             <div id="sidebar">
                 <nav>
                     <div class="side-category">
                         <span class="side-header">My Tasks</span>
-                        <button id="inbox-btn" class="btn-side btn-side-selected"><i class="fa-lg fa-solid fa-inbox btn-side-icon"></i>Inbox</button>
-                        <button id="today-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-day btn-side-icon"></i>Today</button>
-                        <button id="week-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-week btn-side-icon"></i>This Week</button>
-                        <button id="month-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-days btn-side-icon"></i>This Month</button>
-                        <button id="completed-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-check btn-side-icon"></i>Completed</button>
-                        <button id="past-due-btn" class="btn-side"><i class="fa-lg fa-solid fa-calendar-xmark btn-side-icon"></i>Past Due</button>
-                        <button id="trash-btn" class="btn-side"><i class="fa-lg fa-solid fa-trash-can btn-side-icon"></i>Trash</button>
+                        <button id="inbox-btn" class="btn-side btn-side-selected"><i class="fa-lg fa-fw fa-solid fa-inbox btn-side-icon"></i>Inbox</button>
+                        <button id="today-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-calendar-day btn-side-icon"></i>Today</button>
+                        <button id="week-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-calendar-week btn-side-icon"></i>This Week</button>
+                        <button id="month-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-calendar-days btn-side-icon"></i>This Month</button>
+                        <button id="past-due-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-calendar-xmark btn-side-icon"></i>Past Due</button>
+                        <button id="completed-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-square-check btn-side-icon"></i>Completed</button>
+                        <button id="trash-btn" class="btn-side"><i class="fa-lg fa-fw fa-solid fa-trash-can btn-side-icon"></i>Trash</button>
                     </div>
                 </nav>
             </div>
@@ -32,6 +36,10 @@
                         </button> -->
                     </div>
                     <button id="btn-add-task"><i class="fa-solid fa-plus"></i> Add Task</button>
+                    <div class="add-task-prompt">
+                        <input type="text" placeholder="Task Name"/>
+                        <input type="date"/>
+                    </div>
                 </div>
             </div>
         </main>
