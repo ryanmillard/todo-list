@@ -29,16 +29,17 @@
             <div id="main-content">
                 <div class="main-container">
                     <div id="category-title">Inbox</div>
-                    <div id="category-message">No tasks</div>
-                    <div id="category-list">
-                        <!-- <button class="btn-task">
-                            <i class="far fa-circle-check fa-xl" style="margin-left: 10px; cursor: pointer;"></i>
-                        </button> -->
-                    </div>
+                    <div id="category-message"></div>
+                    <div id="category-list"></div>
                     <button id="btn-add-task"><i class="fa-solid fa-plus"></i> Add Task</button>
-                    <div class="add-task-prompt">
-                        <input type="text" placeholder="Task Name"/>
-                        <input type="date"/>
+                    <div id="add-task-prompt">
+                        <form name="add_task" action="" autocomplete="off">
+                            <input type="text" placeholder="Task Name" id="add-task-name"/>
+                            <span style="color: white;">optional</span>
+                            <input type="date"/>
+                            <button type="submit" value="submit">Create Task</button>
+                            <button type="button" id="add-task-cancel">Cancel</button>
+                        </form>
                     </div>
                 </div>
             </div>

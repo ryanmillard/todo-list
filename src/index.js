@@ -2,6 +2,7 @@ import './style.scss';
 import './taskManagement.js';
 import './sidebar.js';
 import './category.js';
+import './promptHandler.js';
 import * as taskManagement from './taskManagement.js';
 
 taskManagement.createTask("Example 1");

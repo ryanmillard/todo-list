@@ -59,7 +59,7 @@ main {
 }
 
 .main-container {
-    padding: 40px;
+    margin: 40px;
     width: 100%;
     max-width: 700px;
 }
@@ -188,12 +188,25 @@ main {
     margin: 10px 12px 10px 15px;
 }
 
-.add-task-prompt {
-    /* style="width: 100%; height: 300px; background-color: aliceblue;" */
-    width: 100%;
-    height: 300px;
+#add-task-prompt {
+    box-sizing: border-box;
+    display: none;
+    height: 150px;
     border-radius: 10px;
+    margin-top: 20px;
+    padding: 20px;
     background-color: lighten($dark-2, 5%);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#add-task-prompt input {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
 }
 
 footer {
