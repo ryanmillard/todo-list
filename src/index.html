@@ -32,15 +32,15 @@
                     <div id="category-message"></div>
                     <div id="category-list"></div>
                     <button id="btn-add-task"><i class="fa-solid fa-plus"></i> Add Task</button>
-                    <div id="add-task-prompt">
-                        <form name="add_task" action="" autocomplete="off">
-                            <input type="text" placeholder="Task Name" id="add-task-name"/>
-                            <span style="color: white;">optional</span>
-                            <input type="date"/>
+                    <form id="add-task-prompt" name="add_task" action="" autocomplete="off">
+                        <input type="text" placeholder="Task Name" id="add-task-name"/>
+                        <span style="color: white; padding: 10px;">OPTIONAL:</span>
+                        <input type="date" id="add-task-date"/>
+                        <div class="add-task-prompt-buttons">
                             <button type="submit" value="submit">Create Task</button>
                             <button type="button" id="add-task-cancel">Cancel</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>

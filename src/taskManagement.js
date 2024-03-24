@@ -8,8 +8,17 @@ window.addEventListener('trashTask', (e) => {
     trashTask(e.detail.taskID);
 });
 
-export function createTask(name) {
-    let task = new Task(name);
+window.addEventListener('completeTask', (e) => {
+    console.log("completeTask: Completing", e.detail.taskID);
+    completeTask(e.detail.taskID);
+});
+
+window.addEventListener('uncompleteTask', (e) => {
+    uncompleteTask(e.detail.taskID);
+});
+
+export function createTask(name, creationDate, dueDate) {
+    let task = new Task(name, creationDate, dueDate);
     storage.storeNewTask(task);
     category.createTask(task);
 }
@@ -26,6 +35,12 @@ export function deleteTask(taskID) {
 
 export function completeTask(taskID) {
     let task = storage.getTaskByID(taskID);
-    task.completed = new Date();
-    
+    task.completionDate = new Date();
+    category.completeTask(taskID);
+}
+
+export function uncompleteTask(taskID) {
+    let task = storage.getTaskByID(taskID);
+    task.completionDate = null;
+    category.uncompleteTask(taskID);
 }

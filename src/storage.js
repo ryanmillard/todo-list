@@ -16,7 +16,7 @@ function updateStorage() {
     // {...tasks} and Object.assign({}, tasks) kept copying
     // by reference, so I had to use this instead.
     let tasksCopy = JSON.parse(JSON.stringify(tasks));
-
+    
     Object.keys(tasksCopy).forEach(taskID => {
         Object.keys(tasksCopy[taskID]).forEach(key => {
             let value = tasksCopy[taskID][key];

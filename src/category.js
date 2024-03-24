@@ -68,6 +68,7 @@ export function trashTask(taskID) {
 }
 
 export function completeTask(taskID) {
+    if (storage.getTaskByID(taskID).deleted !== null) return;
     categories['completed'].push(taskID);
 }
 
@@ -85,6 +86,22 @@ function createTaskUI(task) {
         if (marginDirection == "left") icon.style.marginLeft = marginLength;
         if (marginDirection == "right") icon.style.marginRight = marginLength;
         return icon;
+    }
+
+    function checkTask() {
+        completedIcon.classList.add('fa-circle-check', 'fa-solid');
+        completedIcon.classList.remove('fa-circle', 'fa-regular');
+        completedIcon.style.color = "#fff";
+        button.style.opacity = "50%";
+        span.style.textDecoration = "line-through";
+    }
+
+    function uncheckTask() {
+        completedIcon.classList.add('fa-circle', 'fa-regular');
+        completedIcon.classList.remove('fa-circle-check', 'fa-solid');
+        completedIcon.style.color = "";
+        button.style.opacity = "";
+        span.style.textDecoration = "";
     }
 
     let button = document.createElement('button');
@@ -114,23 +131,22 @@ function createTaskUI(task) {
 
     button.appendChild(leftContainer);
 
-    let checked = false;
+    if (task.completionDate !== null) {
+        checkTask();
+    }
 
     completedIcon.addEventListener('click', () => {
-        if (!checked) {
-            completedIcon.classList.add('fa-circle-check', 'fa-solid');
-            completedIcon.classList.remove('fa-circle', 'fa-regular');
-            completedIcon.style.color = "#fff";
-            checked = true;
-            button.style.opacity = "50%";
-            span.style.textDecoration = "line-through";
+        let currentTask = storage.getTaskByID(task.ID);
+        if (currentTask.completionDate === null) {
+            checkTask();
+            window.dispatchEvent(new CustomEvent('completeTask', {
+                detail: { "taskID": task.ID }
+            }));
         } else {
-            completedIcon.classList.add('fa-circle', 'fa-regular');
-            completedIcon.classList.remove('fa-circle-check', 'fa-solid');
-            completedIcon.style.color = "";
-            checked = false;
-            button.style.opacity = "";
-            span.style.textDecoration = "";
+            uncheckTask();
+            window.dispatchEvent(new CustomEvent('uncompleteTask', {
+                detail: { "taskID": task.ID }
+            }));
         }
     });
 

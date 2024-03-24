@@ -1,5 +1,7 @@
+import { nextWednesday } from "date-fns";
+
 export class Task {
-    constructor(name, creationDate) {
+    constructor(name, creationDate, dueDate) {
         this.name = name;
         this.creationDate = creationDate === undefined ? new Date() : creationDate;
         
@@ -8,7 +10,7 @@ export class Task {
         this.ID = crypto.randomUUID().replace(/-/g, '');
         
         this.completionDate = null;
-        this.dueDate = null;
+        this.dueDate = dueDate;
         this.priority = null;
         this.starred = null;
         this.deleted = null;

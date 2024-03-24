@@ -10,6 +10,13 @@ $header-height: 50px;
 $footer-height: 50px;
 $sidebar-width: 250px;
 
+@mixin flex-center-column() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 * {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -153,10 +160,7 @@ main {
 }
 
 .side-category {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    @include flex-center-column();
     padding: 20px;
 }
 
@@ -189,46 +193,61 @@ main {
 }
 
 #add-task-prompt {
+    @include flex-center-column();
     box-sizing: border-box;
     display: none;
-    height: 150px;
     border-radius: 10px;
     margin-top: 20px;
     padding: 20px;
     background-color: lighten($dark-2, 5%);
     width: 100%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
 #add-task-prompt input {
-    box-sizing: border-box;
+    display: block;
     padding: 10px;
     border-radius: 5px;
+    width: 100%;
     border: none;
+    box-sizing: border-box;
+}
+
+#add-task-prompt button {
+    padding: 10px;
+    width: 20%;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-task-prompt-buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px;
+}
+
+#add-task-cancel {
+    background-color: $red;
+}
+
+#add-task-prompt button[type="submit"] {
+    background-color: $green;
 }
 
 footer {
+    @include flex-center-column();
     height: $footer-height;
     background-color: $dark-4;
     color: white;
     font-family: monospace;
     font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 a {
     color: white;
     font-weight: bold;
     text-decoration: none;
-}
-
-input[type="checkbox"] {
-    height: 20px;
-    width: 20px;
-    border-radius: 1rem;
-    background-color: red;
 }
