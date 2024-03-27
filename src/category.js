@@ -1,14 +1,9 @@
 import * as storage from './storage.js';
-import { isToday, isThisWeek, isThisMonth, isPast } from 'date-fns';
+import { isToday, isThisWeek, isThisMonth, isPast, formatDistanceToNowStrict, differenceInCalendarWeeks } from 'date-fns';
 
 let currentCategory = "inbox";
 
-// types of categories
-// today
-// week
-// month
-// completed
-// past due
+const pastDueRed = "#da7272";
 
 let categories = {
     "inbox": [],
@@ -31,7 +26,7 @@ export function sortAllTasks() {
 export function sortTaskIntoCategories(taskID) {
     const task = storage.getTaskByID(taskID);
     
-    if (task.deleted) {
+    if (task.trashed) {
         categories["trash"].push(taskID);
         return;
     }
@@ -60,20 +55,37 @@ function removeTaskFromCategory(taskID, categoryName) {
     categories[categoryName].splice(index, 1);
 }
 
-export function trashTask(taskID) {
+function removeTaskFromAllCategories(taskID) {
     for (const categoryName in categories) {
         removeTaskFromCategory(taskID, categoryName);
     }
+}
+
+export function trashTask(taskID) {
+    removeTaskFromAllCategories(taskID);
     categories['trash'].push(taskID);
+
+    // Refresh category if needed to display message
+    if (categories[currentCategory].length !== 0) return;
+    renderCategory(currentCategory);
 }
 
 export function completeTask(taskID) {
-    if (storage.getTaskByID(taskID).deleted !== null) return;
+    if (storage.getTaskByID(taskID).trashed !== null) return;
     categories['completed'].push(taskID);
 }
 
 export function uncompleteTask(taskID) {
     removeTaskFromCategory(taskID, 'completed');
+}
+
+export function deleteTask(taskID) {
+    removeTaskFromAllCategories(taskID);
+
+    // Refresh category if needed to display message
+    if (currentCategory !== 'trash') return;
+    if (categories[currentCategory].length !== 0) return;
+    renderCategory(currentCategory);
 }
 
 function createTaskUI(task) {
@@ -114,7 +126,7 @@ function createTaskUI(task) {
     leftContainer.style.display = "flex";
     leftContainer.style.alignItems = "center";
     leftContainer.style.justifyContent = "left";
-    leftContainer.style.width = "50%";
+    leftContainer.style.width = "80%";
     leftContainer.style.height = "100%";
     // leftContainer.style.backgroundColor = "red";
 
@@ -130,7 +142,7 @@ function createTaskUI(task) {
     leftContainer.appendChild(span);
 
     button.appendChild(leftContainer);
-
+    
     if (task.completionDate !== null) {
         checkTask();
     }
@@ -151,35 +163,87 @@ function createTaskUI(task) {
     });
 
     let rightContainer = document.createElement('div');
-    rightContainer.style.display = "none";
+    rightContainer.style.display = "flex";
     rightContainer.style.alignItems = "center";
     rightContainer.style.justifyContent = "right";
-    rightContainer.style.width = "10%";
+    rightContainer.style.width = "30%";
     rightContainer.style.height = "100%";
+    // rightContainer.style.backgroundColor = "blue";
 
-    let editIcon = createTaskButton('fa-pen-to-square', true, "right", "13px");
+    let editIcon = createTaskButton('fa-pen-to-square', true, 'right', '13px');
+    editIcon.style.display = 'none';
     rightContainer.appendChild(editIcon);
 
-    let deleteIcon = createTaskButton('fa-trash-can', true, "right", "10px");
+    let deleteIcon = createTaskButton('fa-trash-can', true, 'right', '10px');
+    deleteIcon.style.display = 'none';
     rightContainer.appendChild(deleteIcon);
+
+    let calendarIcon = undefined;
+    let calendarSpan = undefined;
+
+    if (task.dueDate !== null) {
+        calendarIcon = createTaskButton('fa-calendar', true);
+        rightContainer.appendChild(calendarIcon);
+        
+        let distance = formatDistanceToNowStrict(task.dueDate);
+
+        calendarSpan = document.createElement('span');
+        calendarSpan.style.padding = '10px';
+        calendarSpan.style.fontSize = '0.85rem';
+        calendarSpan.style.fontWeight = 'bold';
+        rightContainer.appendChild(calendarSpan);
+
+        if (isPast(task.dueDate)) {
+            calendarSpan.textContent = `${distance} late`;
+            calendarSpan.style.color = pastDueRed;
+            calendarIcon.style.color = pastDueRed;
+        } else {
+            calendarSpan.textContent = `Due in ${distance}`;
+        }
+    }
+
+    editIcon.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('editTask', {
+            detail: { "taskID": task.ID }
+        }));
+    });
 
     deleteIcon.addEventListener('click', () => {
         button.remove();
-
-        console.log("delete button clicked", task, task.ID);
-        window.dispatchEvent(new CustomEvent('trashTask', {
-            detail: { "taskID": task.ID }
-        }));
+        if (task.trashed === null) {
+            console.log("trash button clicked", task, task.ID);
+            window.dispatchEvent(new CustomEvent('trashTask', {
+                detail: { "taskID": task.ID }
+            }));
+        } else {
+            console.log("delete button clicked", task, task.ID);
+            window.dispatchEvent(new CustomEvent('deleteTask', {
+                detail: { "taskID": task.ID }
+            }));
+        }
     }, {once: true});
 
     button.appendChild(rightContainer);
 
+    console.log(editIcon.style.display);
     button.addEventListener('mouseenter', () => {
-        rightContainer.style.display = "flex";
+        editIcon.style.display = 'inline-block';
+        deleteIcon.style.display = 'inline-block';
+
+        if (task.dueDate !== null) {
+            calendarSpan.style.display = 'none';
+            calendarIcon.style.display = 'none';
+        }
     });
 
     button.addEventListener('mouseleave', () => {
-        rightContainer.style.display = "none";  
+        editIcon.style.display = 'none';
+        deleteIcon.style.display = 'none';
+        
+        if (task.dueDate !== null) {
+            calendarSpan.style.display = 'inline-block';
+            calendarIcon.style.display = 'inline-block';
+        }
     });
 
     let list = document.getElementById('category-list');

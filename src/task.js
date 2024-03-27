@@ -10,10 +10,10 @@ export class Task {
         this.ID = crypto.randomUUID().replace(/-/g, '');
         
         this.completionDate = null;
-        this.dueDate = dueDate;
+        this.dueDate = dueDate === undefined ? null : dueDate;
         this.priority = null;
         this.starred = null;
-        this.deleted = null;
+        this.trashed = null;
     }
 
     isCompleted() {

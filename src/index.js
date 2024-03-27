@@ -7,4 +7,4 @@ import * as taskManagement from './taskManagement.js';
 
 taskManagement.createTask("Example 1");
 taskManagement.createTask("Example 2");
-taskManagement.createTask("Example 3");
+taskManagement.createTask("Example 3", undefined, new Date().setMonth(11));

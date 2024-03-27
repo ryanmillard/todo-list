@@ -10,10 +10,14 @@ $header-height: 50px;
 $footer-height: 50px;
 $sidebar-width: 250px;
 
-@mixin flex-center-column() {
+@mixin flex-center() {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@mixin flex-center-column() {
+    @include flex-center();
     flex-direction: column;
 }
 
@@ -47,6 +51,7 @@ header {
 }
 
 main {
+    height: calc(100vh - #{$header-height} - #{$footer-height});
     margin: 0;
     display: flex;
     align-items: center;
@@ -54,9 +59,18 @@ main {
     margin: 0;
 }
 
+#prompt-overlay {
+    @include flex-center();
+    position: fixed;
+    width: 100%;
+    height: inherit;
+    background-color: rgba(0,0,0,0.75);
+    display: none;
+}
+
 #main-content {
     flex-grow: 1;
-    height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: inherit;
     background-color: $dark-2;
     overflow: scroll;
     border-radius: 15px 0 0 0;
@@ -89,7 +103,7 @@ main {
     align-items: center;
     justify-content: center;
     margin-top: 30px;
-    // gap: 10px;
+    gap: 10px;
     flex-direction: column;
 }
 
@@ -123,8 +137,7 @@ main {
 }
 
 .btn-task {
-    // background-color: $dark-1;
-    background: none;
+    background-color: $dark-1;
     color: white;
     border: none;
     border-radius: 5px;
@@ -147,7 +160,7 @@ main {
 #sidebar {
     background-color: $dark-3;
     width: $sidebar-width;
-    height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: inherit;
     overflow: hidden;
     color: white;
 }
@@ -192,18 +205,18 @@ main {
     margin: 10px 12px 10px 15px;
 }
 
-#add-task-prompt {
+#add-task-prompt, #edit-task-prompt {
     @include flex-center-column();
     box-sizing: border-box;
-    display: none;
     border-radius: 10px;
-    margin-top: 20px;
     padding: 20px;
     background-color: lighten($dark-2, 5%);
-    width: 100%;
+    width: 300px;
+    gap: 10px;
+    display: none;
 }
 
-#add-task-prompt input {
+#add-task-prompt input, #edit-task-input input {
     display: block;
     padding: 10px;
     border-radius: 5px;
@@ -212,21 +225,19 @@ main {
     box-sizing: border-box;
 }
 
-#add-task-prompt button {
+#add-task-prompt button, #edit-task-input input {
     padding: 10px;
-    width: 20%;
+    width: calc(50% - 5px);
     border-radius: 5px;
     border: none;
     cursor: pointer;
 }
 
-.add-task-prompt-buttons {
+.task-prompt-buttons {
+    @include flex-center();
+    box-sizing: border-box;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 10px;
-    margin: 10px;
 }
 
 #add-task-cancel {
@@ -238,7 +249,7 @@ main {
 }
 
 footer {
-    @include flex-center-column();
+    @include flex-center();
     height: $footer-height;
     background-color: $dark-4;
     color: white;
