@@ -1,4 +1,3 @@
-import './task.js';
 import { Task } from './task.js';
 
 let tasks = {};

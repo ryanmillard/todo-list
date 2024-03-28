@@ -9,8 +9,10 @@ export class Task {
         
         this.completionDate = null;
         this.dueDate = dueDate === undefined ? null : dueDate;
-        this.priority = null;
-        this.starred = null;
         this.trashed = null;
+
+        // Features that could be implemented:
+        // this.priority = null;
+        // this.starred = null;
     }
 }
