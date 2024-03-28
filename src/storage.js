@@ -1,18 +1,24 @@
+import './task.js';
+import { Task } from './task.js';
+
 let tasks = {};
 
-localStorage.setItem("tasks", "{}");
-
-// Check if tasks exists in local storage
-if (localStorage.getItem("tasks") === null) {
-    localStorage.setItem("tasks", JSON.stringify([]));
-} else {
-    tasks = JSON.parse(localStorage.getItem("tasks"));
+export function loadStorage() {
+    // Check if tasks exists in local storage
+    if (localStorage.getItem("tasks") === null) {
+        localStorage.setItem("tasks", '{}');
+    } else {
+        let savedTasks = JSON.parse(localStorage.getItem("tasks"));
+        Object.keys(savedTasks).forEach(taskID => {
+            let task = savedTasks[taskID];
+            let rebuiltTask = new Task(task.name, task.creationDate, task.dueDate);
+            rebuiltTask.trashed = task.trashed === undefined ? null : task.trashed;
+            tasks[rebuiltTask.ID] = rebuiltTask;
+        });
+    }
 }
 
-console.log(localStorage.getItem('tasks') === null);
-console.log(localStorage);
-
-function updateStorage() {
+export function updateStorage() {
     // {...tasks} and Object.assign({}, tasks) kept copying
     // by reference, so I had to use this instead.
     let tasksCopy = JSON.parse(JSON.stringify(tasks));

@@ -12,7 +12,7 @@
             </div>
         </header>
         <main>
-            <div id="prompt-overlay">
+            <div id="prompt-container">
                 <form id="add-task-prompt" name="add_task" action="" autocomplete="off">
                     <input type="text" placeholder="Task Name" id="add-task-name"/>
                     <input type="date" id="add-task-date"/>
@@ -25,10 +25,11 @@
                     <input type="text" placeholder="Task Name" id="edit-task-name"/>
                     <input type="date" id="edit-task-date"/>
                     <div class="task-prompt-buttons">
-                        <button type="submit" value="submit">Edit Task</button>
+                        <button type="submit" value="submit">Save Changes</button>
                         <button type="button" id="edit-task-cancel">Cancel</button>
                     </div>
                 </form>
+                <div id="prompt-overlay"></div>
             </div>
             <div id="sidebar">
                 <nav>

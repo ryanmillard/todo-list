@@ -1,7 +1,7 @@
 import * as storage from './storage.js';
 import { isToday, isThisWeek, isThisMonth, isPast, formatDistanceToNowStrict, differenceInCalendarWeeks } from 'date-fns';
 
-let currentCategory = "inbox";
+let currentCategory = '';
 
 const pastDueRed = "#da7272";
 
@@ -15,7 +15,7 @@ let categories = {
     "trash": []
 }
 
-export function sortAllTasks() {
+export function sortAllTasksIntoCategories() {
     let tasks = storage.getAllTasks();
 
     for (const taskID in tasks) {
@@ -46,8 +46,6 @@ export function sortTaskIntoCategories(taskID) {
     categories["inbox"].push(taskID);
 }
 
-sortAllTasks();
-
 function removeTaskFromCategory(taskID, categoryName) {
     let category = categories[categoryName];
     let index = category.indexOf(taskID);
@@ -66,6 +64,16 @@ export function trashTask(taskID) {
     categories['trash'].push(taskID);
 
     // Refresh category if needed to display message
+    if (categories[currentCategory].length !== 0) return;
+    renderCategory(currentCategory);
+}
+
+export function restoreTask(taskID) {
+    removeTaskFromCategory(taskID, 'trash');
+    sortTaskIntoCategories(taskID);
+
+    // Refresh category if needed to display message
+    if (currentCategory != 'trash') return;
     if (categories[currentCategory].length !== 0) return;
     renderCategory(currentCategory);
 }
@@ -126,7 +134,7 @@ function createTaskUI(task) {
     leftContainer.style.display = "flex";
     leftContainer.style.alignItems = "center";
     leftContainer.style.justifyContent = "left";
-    leftContainer.style.width = "80%";
+    leftContainer.style.width = "65%";
     leftContainer.style.height = "100%";
     // leftContainer.style.backgroundColor = "red";
 
@@ -166,20 +174,61 @@ function createTaskUI(task) {
     rightContainer.style.display = "flex";
     rightContainer.style.alignItems = "center";
     rightContainer.style.justifyContent = "right";
-    rightContainer.style.width = "30%";
+    rightContainer.style.width = "35%";
     rightContainer.style.height = "100%";
     // rightContainer.style.backgroundColor = "blue";
 
-    let editIcon = createTaskButton('fa-pen-to-square', true, 'right', '13px');
-    editIcon.style.display = 'none';
-    rightContainer.appendChild(editIcon);
-
-    let deleteIcon = createTaskButton('fa-trash-can', true, 'right', '10px');
-    deleteIcon.style.display = 'none';
-    rightContainer.appendChild(deleteIcon);
-
+    let editIcon = undefined;
+    let trashIcon = undefined;
+    let restoreIcon = undefined;
+    let deleteIcon = undefined;
     let calendarIcon = undefined;
     let calendarSpan = undefined;
+
+    if (task.trashed === null) {
+        editIcon = createTaskButton('fa-pen-to-square', true, 'right', '13px');
+        editIcon.style.display = 'none';
+        rightContainer.appendChild(editIcon);
+    
+        trashIcon = createTaskButton('fa-trash-can', true, 'right', '10px');
+        trashIcon.style.display = 'none';
+        rightContainer.appendChild(trashIcon);
+
+        editIcon.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('editTask', {
+                detail: { "taskID": task.ID }
+            }));
+        });
+    
+        trashIcon.addEventListener('click', () => {
+            button.remove();
+            window.dispatchEvent(new CustomEvent('trashTask', {
+                detail: { "taskID": task.ID }
+            }));
+        }, {once: true});
+    } else {
+        restoreIcon = createTaskButton('fa-clock-rotate-left', true, 'right', '10px');
+        restoreIcon.style.display = 'none';
+        rightContainer.appendChild(restoreIcon);
+        
+        deleteIcon = createTaskButton('fa-trash-can', true, 'right', '10px');
+        deleteIcon.style.display = 'none';
+        rightContainer.appendChild(deleteIcon);
+
+        restoreIcon.addEventListener('click', () => {
+            button.remove();
+            window.dispatchEvent(new CustomEvent('restoreTask', {
+                detail: { "taskID": task.ID }
+            }));
+        }, {once: true});
+    
+        deleteIcon.addEventListener('click', () => {
+            button.remove();
+            window.dispatchEvent(new CustomEvent('deleteTask', {
+                detail: { "taskID": task.ID }
+            }));
+        }, {once: true});
+    }
 
     if (task.dueDate !== null) {
         calendarIcon = createTaskButton('fa-calendar', true);
@@ -202,33 +251,16 @@ function createTaskUI(task) {
         }
     }
 
-    editIcon.addEventListener('click', () => {
-        window.dispatchEvent(new CustomEvent('editTask', {
-            detail: { "taskID": task.ID }
-        }));
-    });
-
-    deleteIcon.addEventListener('click', () => {
-        button.remove();
-        if (task.trashed === null) {
-            console.log("trash button clicked", task, task.ID);
-            window.dispatchEvent(new CustomEvent('trashTask', {
-                detail: { "taskID": task.ID }
-            }));
-        } else {
-            console.log("delete button clicked", task, task.ID);
-            window.dispatchEvent(new CustomEvent('deleteTask', {
-                detail: { "taskID": task.ID }
-            }));
-        }
-    }, {once: true});
-
     button.appendChild(rightContainer);
 
-    console.log(editIcon.style.display);
     button.addEventListener('mouseenter', () => {
-        editIcon.style.display = 'inline-block';
-        deleteIcon.style.display = 'inline-block';
+        if (task.trashed === null) {
+            editIcon.style.display = 'inline-block';
+            trashIcon.style.display = 'inline-block';
+        } else {
+            restoreIcon.style.display = 'inline-block';
+            deleteIcon.style.display = 'inline-block';
+        }
 
         if (task.dueDate !== null) {
             calendarSpan.style.display = 'none';
@@ -237,9 +269,14 @@ function createTaskUI(task) {
     });
 
     button.addEventListener('mouseleave', () => {
-        editIcon.style.display = 'none';
-        deleteIcon.style.display = 'none';
-        
+        if (task.trashed === null) {
+            editIcon.style.display = 'none';
+            trashIcon.style.display = 'none';
+        } else {
+            restoreIcon.style.display = 'none';
+            deleteIcon.style.display = 'none';
+        }
+
         if (task.dueDate !== null) {
             calendarSpan.style.display = 'inline-block';
             calendarIcon.style.display = 'inline-block';
@@ -252,7 +289,6 @@ function createTaskUI(task) {
 
 export function changeCategory(categoryName) {
     if (categoryName === currentCategory) return;
-    console.log("Changing category to", categoryName);
     changeCategoryTitle(categoryName);
     renderCategory(categoryName);
     currentCategory = categoryName;
@@ -280,6 +316,10 @@ export function createTask(task) {
     renderCategory(currentCategory);
 }
 
+export function taskUpdated(taskID) {
+    renderCategory(currentCategory);
+}
+
 function renderCategory(categoryName) {
     let categoryList = document.getElementById('category-list');
     categoryList.textContent = '';
@@ -297,8 +337,6 @@ function renderCategory(categoryName) {
         createTaskUI(storage.getTaskByID(taskID));
     });
 }
-
-console.log("Categories:", categories);
 
 export function getCurrentCategoryName() {
     return currentCategory;

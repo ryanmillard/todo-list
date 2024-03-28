@@ -1,5 +1,3 @@
-import { nextWednesday } from "date-fns";
-
 export class Task {
     constructor(name, creationDate, dueDate) {
         this.name = name;
@@ -14,23 +12,5 @@ export class Task {
         this.priority = null;
         this.starred = null;
         this.trashed = null;
-    }
-
-    isCompleted() {
-        return this.completionDate === null;
-    }
-
-    isPastDue() {
-        if (this.dueDate === null) return false; // No due date set
-        if (this.completionDate !== null) return false; // Already completed
-        return this.dueDate.now() > new Date().now();
-    }
-
-    isStarred() {
-        return this.starred !== null;
-    }
-
-    completeTask() {
-        this.completionDate = new Date();
     }
 }
