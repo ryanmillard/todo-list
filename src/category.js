@@ -35,7 +35,7 @@ function getCategoryDisplayName(categoryName) {
   return displayNames[categoryName];
 }
 
-function createTaskUI(task) {
+function createTaskUI(task, isNewTask) {
   function createTaskButton(iconName, isSolid, marginDirection, marginLength) {
     const iconType = isSolid ? 'fa-solid' : 'fa-regular';
     const icon = document.createElement('i');
@@ -51,6 +51,10 @@ function createTaskUI(task) {
   button.style.display = 'flex';
   button.style.alignItems = 'center';
   button.style.justifyContent = 'space-between';
+
+  if (isNewTask) {
+    button.classList.add('btn-task-added');
+  }
 
   const leftContainer = document.createElement('div');
   leftContainer.style.display = 'flex';
@@ -225,7 +229,7 @@ function createTaskUI(task) {
   list.appendChild(button);
 }
 
-function renderCategory(categoryName) {
+function renderCategory(categoryName, newTaskID) {
   const categoryList = document.getElementById('category-list');
   categoryList.textContent = '';
 
@@ -239,7 +243,7 @@ function renderCategory(categoryName) {
   }
 
   categories[categoryName].forEach((taskID) => {
-    createTaskUI(storage.getTaskByID(taskID));
+    createTaskUI(storage.getTaskByID(taskID), newTaskID === taskID);
   });
 }
 
@@ -330,7 +334,7 @@ export function changeCategory(categoryName) {
 
 export function createTask(task) {
   sortTaskIntoCategories(task.ID);
-  renderCategory(currentCategory);
+  renderCategory(currentCategory, task.ID);
 }
 
 export function taskUpdated() {

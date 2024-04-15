@@ -164,6 +164,19 @@ main {
     }
 }
 
+.btn-task-added {
+    animation: btn-task-added 300ms ease-in-out;
+}
+
+@keyframes btn-task-added {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
 .btn-task-starred {
     border: 1px gold solid;
 }
