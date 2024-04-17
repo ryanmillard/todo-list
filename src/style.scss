@@ -170,10 +170,10 @@ main {
 
 @keyframes btn-task-added {
     from {
-        transform: scaleY(0) translateY(50%);
+        transform: scale(0,0) translateY(50%);
     }
     to {
-        transform: scaleY(1) translateY(0);
+        transform: scaleY(1,1) translateY(0);
     }
 }
 
@@ -217,11 +217,22 @@ main {
     }
 }
 
-.btn-side-selected {
+.btn-side-selected .fa-solid {
     background-color: $dark-2;
     font-weight: bold;
     &:hover {
         background-color: lighten($dark-2, 5%);
+    }
+
+    animation: btn-side-selected 300ms ease-in-out;
+}
+
+@keyframes btn-side-selected {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1);
     }
 }
 
